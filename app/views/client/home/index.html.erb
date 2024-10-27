@@ -1,0 +1,8 @@
+<h1>Client::Home#index</h1>
+<p>Find me in app/views/client/home/index.html.erb</p>
+<% if user_signed_in? %>
+  <h2> Hello <%= current_user.email %> </h2>
+  <%= link_to 'Sign out', destroy_user_session_path, data: { 'turbo-method': :delete } %>
+<% else %>
+  <%= link_to 'Sign in', new_user_session_path %>
+<% end %>
