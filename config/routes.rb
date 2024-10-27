@@ -1,15 +1,17 @@
 Rails.application.routes.draw do
   devise_for :users
 
-  authenticated :user, ->(u) { u.admin? } do
-    root 'home#admin', as: :admin_root
+  constraints(ClientDomainConstraint.new) do
+    authenticated :user, ->(u) { u.client? } do
+      root 'home#client', as: :client_root
+    end
   end
 
-  authenticated :user, ->(u) { u.client? } do
-    root 'home#client', as: :client_root
+  constraints(AdminDomainConstraint.new) do
+    authenticated :user, ->(u) { u.admin? } do
+      root 'home#admin', as: :admin_root
+    end
   end
 
-  unauthenticated do
-    root 'home#index'
-  end
+  root 'home#index'
 end
